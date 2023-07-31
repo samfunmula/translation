@@ -21,7 +21,7 @@ app = FastAPI()
 
 @app.get("/items/")
 async def get_info(input: Union[str, None] = None,target_lang: Union[str, None] = None):
-    if type(input) != 'str' : 
+    if not input : 
         return Errors.UNSUPPORTED_INPUT_FORMAT
     if target_lang not in language :
         return Errors.UNSUPPORTED_LANGUAGE_ERROR

@@ -8,7 +8,7 @@ RUN apt update && \
     apt -y install python3 python3-pip && \
     pip install --no-cache-dir -r requirements.txt
 
-COPY src .
+COPY main .
 
 RUN chmod 600 /app
 
