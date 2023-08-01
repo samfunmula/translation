@@ -4,7 +4,6 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 from fastlid import fastlid, supported_langs
 from lib import *
 
-
 def translate( input , target_lang ):
     #set predict lang
     fastlid.set_languages = supported_langs
@@ -13,7 +12,8 @@ def translate( input , target_lang ):
                                     tokenizer = tokenizer,
                                     src_lang = fastlid(input)[0],
                                     tgt_lang = target_lang,
-                                    max_length = 400)
+                                    max_length = 2000,
+                                    device=0)
     return translation_pipeline(input)[0]['translation_text']
 
 app = FastAPI()
@@ -26,7 +26,7 @@ async def get_info(input: Union[str, None] = None,target_lang: Union[str, None] 
         return Errors.UNSUPPORTED_LANGUAGE_ERROR
     
     results = translate(input,target_lang)
-    return results
+    return {"result": results}
 
 if __name__ == '__main__' : 
     import uvicorn

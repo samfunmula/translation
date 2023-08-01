@@ -2,9 +2,12 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from fastapi import FastAPI,HTTPException
 from fastapi.responses import JSONResponse
 from dataclasses import dataclass
+import torch
 
-checkpoint = 'facebook/nllb-200-distilled-600M'
-model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print('device:', device)
+checkpoint = 'facebook/nllb-200-distilled-1.3B'
+model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint).to(device)
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
 
