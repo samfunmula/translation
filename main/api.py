@@ -12,7 +12,7 @@ def translate( input , target_lang ):
                                     tokenizer = tokenizer,
                                     src_lang = fastlid(input)[0],
                                     tgt_lang = target_lang,
-                                    max_length = 2000,
+                                    max_length = 400,
                                     device=0)
     return translation_pipeline(input)[0]['translation_text']
 
