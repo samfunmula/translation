@@ -26,6 +26,7 @@ async def get_info(input: Union[str, None] = None,target_lang: Union[str, None] 
         return Errors.UNSUPPORTED_LANGUAGE_ERROR
     
     results = translate(input,target_lang)
+    torch.cuda.empty_cache()
     return {"result": results}
 
 if __name__ == '__main__' : 
