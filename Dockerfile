@@ -1,17 +1,18 @@
-FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+FROM python:3.11
 
 WORKDIR /app
 
 COPY requirements.txt .
 
 RUN apt update && \
-    apt -y install python3 python3-pip && \
     pip install --no-cache-dir -r requirements.txt
+
+RUN pip install fastapi
+RUN pip install fasttext
+RUN pip install torch
 
 COPY main .
 
-RUN chmod 600 /app
-
-EXPOSE 8000
+EXPOSE 9321
 
 CMD python3 api.py
