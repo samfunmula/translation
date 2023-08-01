@@ -7,10 +7,6 @@ COPY requirements.txt .
 RUN apt update && \
     pip install --no-cache-dir -r requirements.txt
 
-RUN pip install fastapi
-RUN pip install fasttext
-RUN pip install torch
-
 COPY main .
 
 EXPOSE 9321
