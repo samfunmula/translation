@@ -13,22 +13,25 @@ def translate( input , target_lang ):
                                     src_lang = fastlid(input)[0],
                                     tgt_lang = target_lang,
                                     max_length = 400,
-                                    device=0)
+                                    device=device)
     return translation_pipeline(input)[0]['translation_text']
 
 app = FastAPI()
 
-@app.get("/items/")
-async def get_info(input: Union[str, None] = None,target_lang: Union[str, None] = None):
+@app.post("/items/")
+async def get_info(request: re):
+    input = request.input
+    tar = request.target
+    print("input:",input,"tar:",tar)
     if not input : 
         return Errors.UNSUPPORTED_INPUT_FORMAT
-    if target_lang not in language :
+    if tar not in language :
         return Errors.UNSUPPORTED_LANGUAGE_ERROR
     
-    results = translate(input,target_lang)
+    results = translate(input,tar)
     torch.cuda.empty_cache()
     return {"result": results}
 
 if __name__ == '__main__' : 
     import uvicorn
-    uvicorn.run(app , host = "0.0.0.0" , port=9321)
+    uvicorn.run(app , host = "0.0.0.0" , port=8000)

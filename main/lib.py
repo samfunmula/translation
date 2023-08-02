@@ -3,8 +3,24 @@ from fastapi import FastAPI,HTTPException
 from fastapi.responses import JSONResponse
 from dataclasses import dataclass
 import torch
+from pydantic import BaseModel
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if torch.cuda.is_available() : 
+    num_gpu = torch.cuda.device_count()
+    if num_gpu > 0:
+        max_memory = -1
+        max_gpu_index = -1
+        for i in range(num_gpu) : 
+            gpu_memory = torch.cuda.get_device_properties(i).total_memory
+
+            if gpu_memory > max_memory:
+                    max_memory = gpu_memory
+                    max_gpu_index = i
+            device = torch.device(f"cuda:{max_gpu_index}")
+else : 
+    device = torch.device("cpu")
+
+
 print('device:', device)
 checkpoint = 'facebook/nllb-200-distilled-1.3B'
 model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint).to(device)
@@ -35,6 +51,10 @@ language = ['ace_Latn', 'acm_Arab', 'acq_Arab', 'aeb_Arab', 'afr_Latn', 'ajp_Ara
             'urd_Arab', 'uzn_Latn', 'vec_Latn', 'vie_Latn', 'war_Latn', 'wol_Latn', 'xho_Latn', 'ydd_Hebr', 'yor_Latn', 
             'yue_Hant', 'zho_Hans', 'zho_Hant', 'zsm_Latn', 'zul_Latn']
 
+
+class re(BaseModel) : 
+    input : str
+    target : str
 
 @dataclass
 class Errors:

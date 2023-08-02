@@ -22,6 +22,20 @@ len(input) <= 1000
 ```
 
 ## Request
+### curl
+ * Task default is translate
+ * It'll automatically detect language
+### enter input 
+```
+curl -X 'POST' \
+  'http://localhost:8000/items/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+"input" : "",
+"target" : ""
+}'
+```
 ### Response
 ```
 {"result": "這是一個翻譯."}
